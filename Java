@@ -1,0 +1,66 @@
+import java.io.*;
+// import java.io.InputStreamReader;
+ 
+//import for Scanner and other utility classes
+import java.util.*;
+ 
+ 
+// Warning: Printing unwanted or ill-formatted data to output will cause the test cases to fail
+ 
+class TestClass {
+    static int shops;
+    static Map<String, Long> map;
+    static long arr[][];
+    public static void main(String args[] ) throws Exception {
+        /* Sample code to perform I/O:
+         * Use either of these methods for input
+ 
+        //BufferedReader
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String name = br.readLine();                // Reading input from STDIN
+        System.out.println("Hi, " + name + ".");    // Writing output to STDOUT
+ 
+        //Scanner
+        Scanner s = new Scanner(System.in);
+        String name = s.nextLine();                 // Reading input from STDIN
+        System.out.println("Hi, " + name + ".");    // Writing output to STDOUT
+ 
+        */
+ 
+        // Write your code here
+        map = new HashMap<>();
+        Scanner s = new Scanner(System.in);
+        shops = s.nextInt();
+        int gcoins = s.nextInt();
+        int pcoins = s.nextInt();
+        int dcoins = s.nextInt();
+        arr = new long [shops][3];
+        for(int i=0;i<shops;i++){
+            arr[i][0] = s.nextLong();
+            arr[i][1] = s.nextLong();
+            arr[i][2] = s.nextLong();
+        } 
+        System.out.println(helper(0,gcoins, pcoins, dcoins));
+    }
+ 
+    static long helper(int shopno, int gc, int pc, int dc){
+        long maxprofit = 0;
+        String key = shopno+":"+gc+":"+pc+":"+dc;
+        if(map.containsKey(key)){
+            return map.get(key);
+        }
+        if(shopno < shops){
+            if(gc>0){
+                maxprofit = Math.max(maxprofit, arr[shopno][0]+helper(shopno+1, gc-1, pc, dc));
+            }
+            if(pc>0){
+                maxprofit = Math.max(maxprofit, arr[shopno][1]+helper(shopno+1, gc, pc-1, dc));
+            }
+            if(dc>0){
+                maxprofit = Math.max(maxprofit, arr[shopno][2]+helper(shopno+1, gc, pc, dc-1));
+            }
+        }
+        map.put(key, maxprofit);
+        return maxprofit;
+    }
+}
